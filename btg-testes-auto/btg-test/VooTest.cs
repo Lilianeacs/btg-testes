@@ -1,4 +1,5 @@
 ﻿using btg_testes_auto;
+using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,58 +10,132 @@ namespace btg_test
 {
     public class VooTest
     {
-        Voo voo = new("Gol", "437", new DateTime(2023, 12, 09, 19, 45, 0));
-
         [Fact]
-        public void ProximoLivre_Sucesso()
+        public void ExibeInformacoesVoo_InformacoesVoo_RetornaTextoComInformacoes()
         {
-            int resultado = voo.ProximoLivre();
+            //Arrange
+            DateTime data = new DateTime(2023, 12, 08, 14, 30, 00);
 
-            Assert.InRange(resultado, 0, 100);
+            Voo voo = new Voo("Avião1", "123", data);
+
+            //Act
+            var resultado = voo.ExibeInformacoesVoo();
+
+            //Assert
+            resultado.Should().Be("Aeronave Avião1 registrada sob voo de número 123 para o dia e hora 08/12/2023 14:30:00"); ;
         }
 
         [Fact]
-        public void AssentoDisponivel_Sucesso()
+        public void AssentoDisponivel_VerificaDisponibilidade_RetornaTrue()
         {
-            bool resultado = voo.AssentoDisponivel(45);
+            //Arrange
+            var voo = new Voo("Avião1", "123", DateTime.Now);
+            voo.OcupaAssento(0);
 
-            Assert.True(resultado);
+            //Act
+            var resultado = voo.OcupaAssento(1);
+
+            //Assert
+            resultado.Should().BeTrue();
         }
 
         [Fact]
-        public void AssentoDisponivel_AssentoOcupado()
+        public void AssentoDisponivel_VerificaDisponibilidade_RetornaFalse()
         {
-            voo.OcupaAssento(86);
+            //Arrange
+            var voo = new Voo("Avião1", "123", DateTime.Now);
+            voo.OcupaAssento(0);
 
-            bool resultado = voo.AssentoDisponivel(86);
+            //Act
+            var resultado = voo.OcupaAssento(0);
 
-            Assert.False(resultado);
+            //Assert
+            resultado.Should().BeFalse();
+        }
+
+
+        [Fact]
+        public void OcupaAssento_AssentoDisponivel_RetornaTrue()
+        {
+            // Arrange
+            var voo = new Voo("Avião1", "123", DateTime.Now);
+            var posicao = 1;
+
+            // Act
+            var resultado = voo.OcupaAssento(posicao);
+
+            // Assert
+            resultado.Should().BeTrue();
+        }
+
+
+        [Fact]
+        public void ProximoLivre_SemAssentosDisponiveis_RetornaZero()
+        {
+            // Arrange
+            var voo = new Voo("Avião1", "123", DateTime.Now);
+
+            for (int i = 0; i <= 100; i++)
+            {
+                voo.OcupaAssento(i);
+            }
+
+            // Act
+            var resultado = voo.ProximoLivre();
+
+            // Assert
+            resultado.Should().Be(0);
+            voo.QuantidadeVagasDisponivel().Should().Be(0);
         }
 
         [Fact]
-
-        public void OcupaAssento_Sucesso()
+        public void ProximoLivre_SemAssentosDisponiveisEAssentoDisponivelNulo_RetornaZero()
         {
-            bool resultado = voo.OcupaAssento(45);
+            // Arrange
+            var voo = new Voo("Avião1", "123", DateTime.Now);
 
-            Assert.True(resultado);
+            for (int i = 0; i <= 100; i++)
+            {
+                voo.OcupaAssento(i);
+            }
+
+            voo.QuantidadeVagasDisponivel();
+
+            // Act
+            var resultado = voo.ProximoLivre();
+
+            // Assert
+            resultado.Should().Be(0);
         }
 
         [Fact]
-        public void QuantidadeVagasDisponivel_Sucesso()
+        public void ProximoLivre_ComAssentosDisponiveis_RetornaProximoAssentoLivreMaiorQueZero()
         {
-            int resultado = voo.QuantidadeVagasDisponivel();
+            // Arrange
+            var voo = new Voo("Avião1", "123", DateTime.Now);
+            voo.OcupaAssento(0);
 
-            Assert.InRange(resultado, 0, 100);
+            // Act
+            var resultado = voo.ProximoLivre();
+
+            // Assert
+            resultado.Should().BeGreaterThan(0);
         }
 
-       
         [Fact]
-        public void ExibirInformacaoVoo_Sucesso()
+        public void QuantidadeVagasDisponivel_AposOcuparAssentos_RetornaQuantidadeCorreta()
         {
-            string resultado = voo.ExibeInformacoesVoo();
+            // Arrange
+            var voo = new Voo("Avião1", "123", DateTime.Now);
+            voo.OcupaAssento(1);
+            voo.OcupaAssento(2);
 
-            Assert.Equal(resultado, "Aeronave Gol registrada sob voo de número 437 para o dia e hora 09/12/2023 19:45:00");
+            // Act
+            var quantidadeEsperada = 100 - 2;
+            var resultado = voo.QuantidadeVagasDisponivel();
+
+            // Assert
+            resultado.Should().Be(quantidadeEsperada);
         }
     }
 }

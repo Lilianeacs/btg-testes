@@ -1,4 +1,5 @@
 ﻿using btg_testes_auto;
+using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace btg_test
         [Theory]
         [InlineData(true)]
         [Trait("VerificarMeiaCinema", "Estudante")]
-        public void VerificarMeiaCinema_RespostaEstudante(bool resposta)
+        public void VerificarMeiaCinema_EstudanteComDireitoMeia_RetornaTrue(bool resposta)
         {
             //Arrange
             MeiaCinema meiaCinema = new();
@@ -32,7 +33,7 @@ namespace btg_test
         [Theory]
         [InlineData(true)]
         [Trait("VerificarMeiaCinema", "DoadorDeSangue")]
-        public void VerificarMeiaCinema_RespostaDoadorDeSangue(bool resposta)
+        public void VerificarMeiaCinema_DoadorDeSangueComDireitoMeia_RetornaTruee(bool resposta)
         {
             //Arrange
             MeiaCinema meiaCinema = new();
@@ -52,7 +53,7 @@ namespace btg_test
         [Theory]
         [InlineData(true)]
         [Trait("VerificarMeiaCinema", "Prefeitura")]
-        public void VerificarMeiaCinema_RespostaPrefeitura(bool resposta)
+        public void VerificarMeiaCinema_PrefeituraComDireitoMeia_RetornaTrue(bool resposta)
         {
             //Arrange
             MeiaCinema meiaCinema = new();
@@ -70,22 +71,21 @@ namespace btg_test
         }
 
         [Theory]
-        [InlineData(false)]
+        [InlineData(false, false, false, false)]
+        [InlineData(false, false, true, false)]
+        [InlineData(false, false, false, true)]
         [Trait("VerificarMeiaCinema", "Falso")]
-        public void VerificarMeiaCinema_RespostaFalsa(bool resposta)
+        public void VerificarMeiaCinema_ExpectadoresSemDireitoAMeia_RetornaFalse(bool estudante, bool doadorDeSangue, bool trabalhadorPrefeitura, bool contratoPrefeitura)
         {
             //Arrange
             MeiaCinema meiaCinema = new();
-            bool estudante = false;
-            bool doadorDeSangue = false;
-            bool trabalhadorPrefeitura = false;
-            bool contratoPrefeitura = true;
+          
 
             //Act
             bool resultado = meiaCinema.VerificarMeiaCinema(estudante, doadorDeSangue, trabalhadorPrefeitura, contratoPrefeitura);
 
             //Assert
-            Assert.Equal(resposta, resultado);
+            resultado.Should().BeFalse();
 
         }
     }

@@ -6,41 +6,6 @@ namespace btg_test
     public class FuncionarioTest
     {
 
-        //nomeMetodo_CondicaoCenario_ComportamentoEsperado
-        /*
-        [Fact]
-        public void DefinirNivelProfissional_SalariosVariados_RetornaNivelProfissionalCorreto()
-        {
-            // Arrange
-            List<decimal> salarios = new() { 0, 1500, 1998, 1999, 5000, 7998, 7999, 8000, 9500 };
-
-            foreach (decimal salario in salarios)
-            {
-                // Act
-                Funcionario funcionario = new("Amanda", salario);
-
-                // Assert
-                if (salario < 1999)
-                    Assert.Equal("Junior", funcionario.NivelProfissional);
-                else if (salario < 7999)
-                    Assert.Equal("Pleno", funcionario.NivelProfissional);
-                else
-                    Assert.Equal("Senior", funcionario.NivelProfissional);
-            }
-        }*/
-        /*
-        [Fact]
-        public void DefinirNivelProfissional_Salarios0_RetornaNivelProfissionalJunior()
-        {
-            // Arrange
-            // Act
-            Funcionario funcionario = new("Amanda", 0);
-
-            // Assert
-            Assert.Equal("Junior", funcionario.NivelProfissional);
-        }
-        */
-
         [Fact(DisplayName = "Salario 1000")]
         [Trait("DefinirNivelProfissional", "ProfissionalJunior")]
         public void DefinirNivelProfissional_Salarios1000_RetornaNivelProfissionalJunior()

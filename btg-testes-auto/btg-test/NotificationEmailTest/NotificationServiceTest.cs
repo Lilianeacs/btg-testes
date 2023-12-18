@@ -1,55 +1,98 @@
 ﻿using btg_testes_auto.Notification;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace btg_test.NotificationEmailTest
 {
     public class NotificationServiceTest
     {
         private readonly IEmailService _mockEmailService;
-        private NotificationService _notificationService;
+        private NotificationService _service; 
 
         public NotificationServiceTest()
         {
             _mockEmailService = Substitute.For<IEmailService>();
-            _notificationService = new(_mockEmailService);
+            _service = new(_mockEmailService);
         }
 
         [Fact]
-        public void SendNotification_Sucesso()
+        public void SendNotification_MessageNull_ReturnFalse()
         {
+            //Arrange
+            string recipient = "email@email.com";
+            string message = null;
 
             //Act
-            bool resultado =  _notificationService.SendNotification("liliane@email.com", "Teste feito com sucesso!");
-            
-            //Assert
-           //Assert.True(resultado); - Não está funcionando 
-            Assert.False(resultado);
+            bool result = _service.SendNotification(recipient, message);
 
+            //Assert
+            result.Should().BeFalse();
         }
 
         [Fact]
-        public void SendNotification_MensagemVazia()
+        public void SendNotification_MessageEmpty_ReturnFalse()
         {
+            //Arrange
+            string recipient = "email@email.com";
+            string message = " ";
 
             //Act
-            bool resultado = _notificationService.SendNotification("liliane@email.com", "");
+            bool result = _service.SendNotification(recipient, message);
 
             //Assert
-            Assert.False(resultado);
-
+            result.Should().BeFalse();
         }
 
         [Fact]
-        public void SendNotification_Exception()
+        public void SendNotification_SendEmail_ReturnTrue()
         {
+            //Arrange
+            string recipient = "email@email.com";
+            string message = "message";
+
+            _mockEmailService.SendEmail(recipient, "Notification", message)
+                .Returns(true);
 
             //Act
-            bool resultado = _notificationService.SendNotification("", "Teste feito com sucesso!");
+            bool result = _service.SendNotification(recipient, message);
 
             //Assert
-            Assert.False(resultado);
+            result.Should().BeTrue();
+        }
 
+        [Fact]
+        public void SendNotification_SendEmail_ReturFalse()
+        {
+            //Arrange
+            string recipient = "email@email.com";
+            string message = "message";
+
+            _mockEmailService.SendEmail(recipient, "Notification", message)
+                .Returns(false);
+
+            //Act
+            bool result = _service.SendNotification(recipient, message);
+
+            //Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void SendNotification_Exception_ReturnFalse()
+        {
+            //Arrange
+            string recipient = "email@email.com";
+            string message = "message";
+
+            _mockEmailService.SendEmail(recipient, "Notification", message)
+                .Throws(new Exception());
+
+            //Act
+            bool result = _service.SendNotification(recipient, message);
+
+            //Assert
+            result.Should().BeFalse();
         }
 
     }

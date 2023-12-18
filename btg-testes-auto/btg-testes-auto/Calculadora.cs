@@ -37,6 +37,7 @@
 
         public double Dividir()
         {
+            
             if (numero2 == 0)
             {
                 throw new Exception("Mensagem exception");

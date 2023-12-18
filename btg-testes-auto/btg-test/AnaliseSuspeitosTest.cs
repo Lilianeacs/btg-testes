@@ -12,7 +12,7 @@ namespace btg_test
         [Theory]
         [InlineData("Suspeita")]
         [Trait("ExecutarQuestionarioSuspeito", "Suspeita")]
-        public void ExecutarQuestionarioSuspeito_ComRespostaSuspeita(string resposta)
+        public void ExecutarQuestionarioSuspeito_RespostaSuspeita_RetornoTrue(string resposta)
         {
             // Arrange
             AnaliseSuspeitos analiseSuspeitos = new();
@@ -36,7 +36,7 @@ namespace btg_test
         [Theory]
         [InlineData("Cúmplice")]
         [Trait("ExecutarQuestionarioSuspeito", "Cúmplice")]
-        public void ExecutarQuestionarioSuspeito_ComRespostaCumplice_Com3Positivo(string resposta)
+        public void ExecutarQuestionarioSuspeito_RespostaCumpliceCom3Positivo_RetornoTrue(string resposta)
         {
             // Arrange
             AnaliseSuspeitos analiseSuspeitos = new();
@@ -60,7 +60,7 @@ namespace btg_test
         [Theory]
         [InlineData("Cúmplice")]
         [Trait("ExecutarQuestionarioSuspeito", "Cúmplice")]
-        public void ExecutarQuestionarioSuspeito_ComRespostaCumplice_Com4Positivo(string resposta)
+        public void ExecutarQuestionarioSuspeito_RespostaCumpliceCom4Positivo_RetornoTrue(string resposta)
         {
             // Arrange
             AnaliseSuspeitos analiseSuspeitos = new();
@@ -84,7 +84,7 @@ namespace btg_test
         [Theory]
         [InlineData("Assassino")]
         [Trait("ExecutarQuestionarioSuspeito", "Assassino")]
-        public void ExecutarQuestionarioSuspeito_ComRespostaAssassino(string resposta)
+        public void ExecutarQuestionarioSuspeito_RespostaAssassino_RetornoTrue(string resposta)
         {
             // Arrange
             AnaliseSuspeitos analiseSuspeitos = new();
@@ -108,7 +108,7 @@ namespace btg_test
         [Theory]
         [InlineData("Inocente")]
         [Trait("ExecutarQuestionarioSuspeito", "Inocente")]
-        public void ExecutarQuestionarioSuspeito_ComRespostaInocente(string resposta)
+        public void ExecutarQuestionarioSuspeito_RespostaInocente_RetornaTrue(string resposta)
         {
             // Arrange
             AnaliseSuspeitos analiseSuspeitos = new();
